@@ -8,8 +8,8 @@ public class MovablePiece : MonoBehaviour
     static private Transform obstacle;
 
     [Header("Inscribed")]
-    static public int posX;
-    static public int posY;
+    public int posX;
+    public int posY;
 
     void Awake()
     {
@@ -18,10 +18,12 @@ public class MovablePiece : MonoBehaviour
     }
 
     void Start() {
-        CatCafe.BLOCK_TILE(posX, posY);
+        Debug.Log("Blocking" + posX +',' + posY);
+        CatCafe.BLOCK_TILE(MP.posX, MP.posY);
     }
 
     void OnMouseDown() {
+        obstacle = this.transform;
         Tile.SET_OBJ_OF_INTEREST(obstacle);
     }
 
@@ -31,12 +33,12 @@ public class MovablePiece : MonoBehaviour
     }
 
     static private void blockLifted() {
-        CatCafe.UNBLOCK_TILE(posX, posY);
+        CatCafe.UNBLOCK_TILE(MP.posX, MP.posY);
     }
 
     static public void SET_POS(int x, int y) {
-        posX = x;
-        posY = y;
+        MP.posX = x;
+        MP.posY = y;
     }
 
 }

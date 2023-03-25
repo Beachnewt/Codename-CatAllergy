@@ -9,7 +9,7 @@ public class Goal2 : MonoBehaviour
     private float startPosX;
 
     [Header("Inscribed")]
-    // choose starting coords in Unity
+    // choose starting coords in Unity Editor
     public int startCoordX;
     public int startCoordY;
 

@@ -7,9 +7,10 @@ public class Tile : MonoBehaviour
     static private Transform ObjOfInterest;
     static private Tile currentTile;
     static private GameObject mainCam;
+    //static private boolean isBlocked;
 
     void Awake() {
-        currentTile = this;
+        currentTile = null;
         mainCam = GameObject.Find("Main Camera");
     }
 
@@ -43,6 +44,15 @@ public class Tile : MonoBehaviour
         if (ObjOfInterest == null) {
             return;
         }
+        if (currentTile == null) {
+            return;
+        }
+        int placedIndex = currentTile.transform.GetSiblingIndex();
+        int row = placedIndex / 10;
+        int column = placedIndex % 10;
+        if (CatCafe.CC.blockedArray[row, column] == tileStatus.blocked) {
+            return;
+        }
         ObjOfInterest.position = new Vector3(
             currentTile.transform.position.x, 
             0, 
@@ -56,6 +66,11 @@ public class Tile : MonoBehaviour
         int row = placedIndex / 10;
         int column = placedIndex % 10;
         CatCafe.BLOCK_TILE(row, column);
+        Debug.Log("blockedPlaced; row: " + row + "col: " + column);
         MovablePiece.SET_POS(row, column);
     }
+
+    // static private void SET_TILE_BLOCKED_STATUS(tileStatus value) {
+    //     isBlocked = value;
+    // }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 /*
     NOTES:
@@ -20,6 +21,7 @@ public class CatBehavior1 : MonoBehaviour
     // static private Transform[,] tAcB1; // tile transforms array
     private int goalX; 
     private int goalY; 
+    private int checkLoops;
     private MoveCat catMover;
 
     // static allows for no singletons needed for the following variables
@@ -33,9 +35,13 @@ public class CatBehavior1 : MonoBehaviour
 
     void Awake() {
         catMover = GetComponent<MoveCat>();
-        CB1 = this;
-        posX = 6;
-        posY = 9;
+        if (this != null) 
+        { 
+            CB1 = this; 
+            posX = 6;
+            posY = 9;
+            checkLoops = 0;
+        }
     }
 
     void Start() {
@@ -58,8 +64,14 @@ public class CatBehavior1 : MonoBehaviour
     }
 
     static public void MOVE_CB1_TO_GOAL() {
+        CB1.checkLoops++;
+        if (CB1.checkLoops > 20) {
+            SceneManager.LoadScene("LoseCB1");
+        }
+        // Go to next level if goal is reached
         if ( (CB1.posX == CB1.goalX) && (CB1.posY == CB1.goalY) ) {
-            return;
+            CB1.catMover.enabled = false;
+            CatCafe.START_LEVEL_2();
         }
         int tempX;
         int tempY;
@@ -123,9 +135,10 @@ public class CatBehavior1 : MonoBehaviour
         CB1.catMover.enabled = true;
 
         // if goal reached and catMover is done moving
-         if ( ((CB1.posX == CB1.goalX) && (CB1.posY == CB1.goalY)) &&
+        if ( ((CB1.posX == CB1.goalX) && (CB1.posY == CB1.goalY)) &&
                CB1.catMover.done == true ) {
             CB1.catMover.enabled = false;
+            CatCafe.START_LEVEL_2();
         }
     } // end MOVE_CAT
 
